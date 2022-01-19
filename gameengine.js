@@ -20,6 +20,11 @@ class GameEngine {
         this.mouse = null;
         this.wheel = null;
 
+        this.key = null;
+        this.right = false;
+        this.left = false;
+        this.a = false;
+
         // THE KILL SWITCH
         this.running = false;
 
@@ -82,7 +87,37 @@ class GameEngine {
             this.wheel = e;
         });
 
-        this.ctx.canvas.addEventListener("contextmenu", e => {
+        var that = this;
+        this.ctx.canvas.addEventListener("keyup", e => {
+            switch(e.code) {
+                case "ArrowRight":
+                    that.right = false;
+                    break;
+                case "ArrowLeft":
+                    that.left = false;
+                    break;
+                case "Space":
+                    that.a = false;
+                    break;
+            }
+        });
+
+        this.ctx.canvas.addEventListener("keydown", function(e) {
+            switch(e.code) {
+                case "ArrowRight":
+                    that.right = true;
+                    break;
+                case "ArrowLeft":
+                    that.left = true;
+                    break;
+                case "Space":
+                    e.preventDefault();
+                    that.a = true;
+                    break;
+            }
+        });
+
+        this.ctx.canvas.addEventListener("contextmenu", function(e) {
             if (this.options.debugging) {
                 console.log("RIGHT_CLICK", getXandY(e));
             }
